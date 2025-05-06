@@ -39,20 +39,20 @@ def preprocess_image(image):
 # Function to extract features
 def extract_features(image_tensor):
     with torch.no_grad():
-        features = resnet50(image_tensor)  # Get feature map
-        features = features.view(features.size(0), -1)  # Flatten to (1, 2048)
+        features = resnet50(image_tensor)
+        features = features.view(features.size(0), -1)
     return features.cpu().numpy()
 
 # Function to classify an image
 def classify_image(image):
     image_tensor = preprocess_image(image)
     features = extract_features(image_tensor)
-    features_pca = pca.transform(features)  # Reduce features
+    features_pca = pca.transform(features)
     prediction = svm_model.predict(features_pca)[0]
-    prediction_proba = svm_model.decision_function(features_pca)  # Get confidence scores
+    prediction_proba = svm_model.decision_function(features_pca)
     return class_names.get(prediction, "Unknown"), prediction_proba
 
-# Streamlit UI
+# Streamlit UI setup
 st.set_page_config(page_title="Diabetic Retinopathy Detector", page_icon="👁️", layout="centered")
 
 st.markdown(
@@ -75,11 +75,12 @@ st.sidebar.info(
     """
 )
 
+# Image Display and Classification
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
-
-    # ✅ Updated line to remove deprecated parameter
-    st.image(image, caption="📸 Uploaded Image", use_container_width=True, output_format="auto")
+    
+    # ✅ Smaller image display
+    st.image(image, caption="📸 Uploaded Image", width=300, output_format="auto")
 
     if st.button("🔍 Classify Image"):
         with st.spinner("Analyzing Image... ⏳"):
@@ -93,3 +94,4 @@ st.markdown(
     <p style='text-align: center;'>Developed by <b>Manoj | Heeranand | Kunal</b></p>
     """, unsafe_allow_html=True
 )
+
