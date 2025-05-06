@@ -58,7 +58,7 @@ st.set_page_config(page_title="Diabetic Retinopathy Detector", page_icon="👁�
 st.markdown(
     """
     <h1 style='text-align: center; color: #3c99dc;'>Diabetic Retinopathy Classification</h1>
-    <p style='text-align: center;'>Upload an eye image and classify it using AI</p>
+    <p style='text-align: center;'>Upload an eye image and classify its type</p>
     """, unsafe_allow_html=True
 )
 
@@ -69,7 +69,7 @@ uploaded_file = st.file_uploader("📂 Choose an image...", type=["png", "jpg", 
 st.sidebar.header("📌 About This App")
 st.sidebar.info(
     """
-    This  model classifies **Diabetic Retinopathy** based on retinal images.  
+    This model classifies **Diabetic Retinopathy** based on retinal images.  
     It extracts features using **ResNet50**, selects important ones via **PCA**,  
     and classifies using **SVM (Support Vector Machine)**.  
     """
@@ -77,21 +77,19 @@ st.sidebar.info(
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
-    
-    # Display uploaded image
-    st.image(image, caption="📸 Uploaded Image", use_column_width=True, output_format="auto")
+
+    # ✅ Updated line to remove deprecated parameter
+    st.image(image, caption="📸 Uploaded Image", use_container_width=True, output_format="auto")
 
     if st.button("🔍 Classify Image"):
         with st.spinner("Analyzing Image... ⏳"):
             predicted_class, confidence_scores = classify_image(image)
             st.success(f"✅ Predicted Class: **{predicted_class}**")
-            
-         
 
 # Footer
 st.markdown(
     """
     <hr>
-    <p style='text-align: center;'>Developed by <b>Manoj|Heeranand| kunal</b> </p>
+    <p style='text-align: center;'>Developed by <b>Manoj | Heeranand | Kunal</b></p>
     """, unsafe_allow_html=True
 )
